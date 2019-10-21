@@ -519,3 +519,5 @@ print('gor_str =', gor_str)
 print('vert_str =', vert_str)
 print('sqw =', sqw)
 print('num_num =', num_num)
+
+# добавил строчку просто так
