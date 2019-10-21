@@ -521,3 +521,5 @@ print('sqw =', sqw)
 print('num_num =', num_num)
 
 # добавил строчку просто так
+
+a = 111
