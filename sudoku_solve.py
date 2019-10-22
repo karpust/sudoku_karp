@@ -420,7 +420,23 @@ def make_sqw(some_lst):
     return ls
 
 
-# создает множество с элементами которых нет в основном списке
+''''# учли первую диагональ
+def make_diag1(some_lst):
+    a = []
+    for i in range(9):
+        a.append(some_lst[i][i])
+    return a
+
+
+# учли вторую диагональ
+def make_diag2(some_lst):
+    a = []
+    for i in range(9):
+        a.append(some_lst[i][abs(i-8)])
+    return a'''
+
+
+# создает множество с невозможными значениями
 def make_set(all_lst):
     for lst in all_lst:
         a = set()
@@ -430,31 +446,58 @@ def make_set(all_lst):
         for elem in lst:
             if type(elem) is set:
                 elem.update(a)
+                elem.symmetric_difference_update(set_all)
     return
 
 
+'''def make_set_diag(lst):
+    a = set()
+    for elem in lst:
+        if type(elem) is not set:
+            a.add(elem)
+    for elem in lst:
+        if type(elem) is set:
+            elem.update(a)
+    return'''
+
+
 # убирает пересечение множеств возвращает число если оно одно во множестве
-def min_in_set(some_lst):
+def min_set(some_lst):
     for i in range(9):
+        a = set()
         for k in range(9):
+            if type(some_lst[i][k]) is not set:
+                a.add(some_lst[i][k])
             if type(some_lst[i][k]) is set:
-                if len(some_lst[i][k]) > 1:
-                    some_lst[i][k].symmetric_difference_update(set_all)
-                    if len(some_lst[i][k]) == 1:
-                        global num_num
-                        num_num += 1
-                        some_lst[i][k] = list(some_lst[i][k])[0]
+                if len(some_lst[i][k]) == 0:
+                    b = set()
+                    b.update(a)
+                    b.symmetric_difference_update(set_all)
+                    some_lst[i][k].update(b)
+                elif len(some_lst[i][k]) > 1:
+                    some_lst[i][k].intersection(a)
+                else:
+                    global num_num
+                    num_num += 1
+                    some_lst[i][k] = list(some_lst[i][k])[0]
+                    f = some_lst[i][k]
 
+gor_str = change_zero(gor_str)  # создали горизонтальные строки из 9 списков с пустыми сетами и числами
+vert_str = make_vert(gor_str)  # создали вертикальные строки из 9 списков с пустыми сетами и числами
+sqw = make_sqw(gor_str)  # создали малые квадраты из 9 списков с пустыми сетами и числами
+#diag1 = make_diag1(gor_str)  # создали первую диагональ из списка с пустыми сетами и числами
+#diag2 = make_diag2(gor_str)  # создали вторую диагональ из списка с пустыми сетами и числами
 
-gor_str = change_zero(gor_str)
-vert_str = make_vert(gor_str)
-sqw = make_sqw(gor_str)
+min_set(gor_str)
+min_set(vert_str)
+min_set(sqw)
+#make_set_diag(diag1)
+#make_set_diag(diag2)
 
-make_set(gor_str)
-make_set(vert_str)
-make_set(sqw)
+#min_in_set(gor_str)
+#min_in_set(vert_str)
+#min_in_set(sqw)
 
-min_in_set(gor_str)
 
 
 
@@ -520,6 +563,3 @@ print('vert_str =', vert_str)
 print('sqw =', sqw)
 print('num_num =', num_num)
 
-# добавил строчку просто так
-
-a = 111
