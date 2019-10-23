@@ -418,6 +418,7 @@ def make_sqw(some_lst):
             i -= 2
         k = 0
     return ls
+1
 
 
 ''''# учли первую диагональ
