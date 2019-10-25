@@ -358,7 +358,7 @@ s7 = [0, 6, 0, 0, 0, 0, 2, 8, 0]
 s8 = [0, 0, 0, 4, 1, 9, 0, 0, 5]
 s9 = [0, 0, 0, 0, 8, 0, 0, 7, 9]
 al = (s1, s2, s3, s4, s5, s6, s7, s8, s9)
-alsq = '530 070 000' \
+"""alsq = '530 070 000' \
        '600 195 000' \
        '098 000 060' \
        '800 060 003' \
@@ -366,7 +366,18 @@ alsq = '530 070 000' \
        '700 020 006' \
        '060 000 280' \
        '000 419 005' \
-       '000 080 079'
+       '000 080 079'"""
+
+alsq = '040 920 000' \
+       '020 000 000' \
+       '000 000 013' \
+       '000 430 002' \
+       '258 006 000' \
+       '004 100 009' \
+       '000 000 580' \
+       '809 073 000' \
+       '000 001 030'
+
 
 s = ''.join(i for i in alsq if i.isdigit())
 set_all = {1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -418,7 +429,7 @@ def make_sqw(some_lst):
             i -= 2
         k = 0
     return ls
-1
+
 
 
 ''''# учли первую диагональ
@@ -469,19 +480,17 @@ def min_set(some_lst):
         for k in range(9):
             if type(some_lst[i][k]) is not set:
                 a.add(some_lst[i][k])
+        a.symmetric_difference_update(set_all)
+        for k in range(9):
             if type(some_lst[i][k]) is set:
                 if len(some_lst[i][k]) == 0:
-                    b = set()
-                    b.update(a)
-                    b.symmetric_difference_update(set_all)
-                    some_lst[i][k].update(b)
+                    some_lst[i][k].update(a)
                 elif len(some_lst[i][k]) > 1:
-                    some_lst[i][k].intersection(a)
+                    some_lst[i][k].intersection_update(a)
                 else:
                     global num_num
                     num_num += 1
                     some_lst[i][k] = list(some_lst[i][k])[0]
-                    f = some_lst[i][k]
 
 gor_str = change_zero(gor_str)  # создали горизонтальные строки из 9 списков с пустыми сетами и числами
 vert_str = make_vert(gor_str)  # создали вертикальные строки из 9 списков с пустыми сетами и числами
@@ -489,29 +498,11 @@ sqw = make_sqw(gor_str)  # создали малые квадраты из 9 с�
 #diag1 = make_diag1(gor_str)  # создали первую диагональ из списка с пустыми сетами и числами
 #diag2 = make_diag2(gor_str)  # создали вторую диагональ из списка с пустыми сетами и числами
 
-min_set(gor_str)
-min_set(vert_str)
-min_set(sqw)
-#make_set_diag(diag1)
-#make_set_diag(diag2)
 
-#min_in_set(gor_str)
-#min_in_set(vert_str)
-#min_in_set(sqw)
-
-
-
-
-
-
-
-
-#min_in_set(vert_str)
-
-
-#print('gor_str[0] =', gor_str[0])
-
-#gor_str[0][2].add('пиписька')
+for _ in range(17):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
 
 
 
