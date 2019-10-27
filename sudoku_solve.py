@@ -446,6 +446,78 @@ def min_in_set(some_lst):
                         some_lst[i][k] = list(some_lst[i][k])[0]
 
 
+
+
+#Алгоритмы судоку
+
+#Единственный в строке
+
+#Два в строке - 46 и 64
+
+#Или 347 и 3587 и больше нигде нет 37
+
+
+'''  # Для ед в строке:
+
+for lst in all_lst:
+    l = []
+    for elem in lst:
+        if type(elem) is set:
+            l += (list(elem))
+    for elem in lst:
+        if type(elem) is set:
+            for el in elem:
+                if l.count(el) == 1:
+                    elem.intersection_update({el})
+                    break
+'''
+
+
+
+'''  # Для двух возможных в строке:
+
+for lst in all_lst:
+    a = set()
+    l = []
+    for elem in lst:
+        if type(elem) is set:
+            l += (list(elem))
+    for elem in lst:
+        if type(elem) is set:
+            for el in elem:
+                if l.count(el) == 2:
+                    a.add(el)
+    for elem in lst:
+        if type(elem) is set:
+            if a <= elem:
+                elem.intersection_update(a)    '''
+
+
+   # если по два одинаковых в двух клетках:
+for lst in all_lst:
+    for i in range(9):
+        a = set()
+        if type(lst[i]) is set:
+            a = lst[i]
+        for elem in lst:
+            if type(elem) is set:
+                if a <= elem and len(a) == len(elem):
+                    b = a
+                    c = list(b)
+                    for i in range(len(c)):
+                        for elem in lst:
+                            if type(elem) is set:
+                                if {c[i]} <= elem and len(b) < len(elem):
+                                    elem.difference_update({c[i]})
+
+
+
+
+
+print(ss)
+
+
+
 gor_str = change_zero(gor_str)
 vert_str = make_vert(gor_str)
 sqw = make_sqw(gor_str)
