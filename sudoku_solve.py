@@ -368,7 +368,7 @@ al = (s1, s2, s3, s4, s5, s6, s7, s8, s9)
        '000 419 005' \
        '000 080 079'"""
 
-alsq = '040 920 000' \
+"""alsq = '040 920 000' \
        '020 000 000' \
        '000 000 013' \
        '000 430 002' \
@@ -376,13 +376,24 @@ alsq = '040 920 000' \
        '004 100 009' \
        '000 000 580' \
        '809 073 000' \
-       '000 001 030'
+       '000 001 030' """
+
+alsq = '010 038 060' \
+       '000 001 045' \
+       '590 000 000' \
+       '000 390 100' \
+       '650 000 000' \
+       '000 160 020' \
+       '000 614 000' \
+       '007 000 000' \
+       '000 000 809'
 
 
 s = ''.join(i for i in alsq if i.isdigit())
 set_all = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 gor_str = [int(s[i]) for i in range(len(s))]
 num_num = 0
+count = 0
 #vert_str = [int(s[i]) for k in range(9) for i in range(k, len(s), 9)]
 #sqw = []
 #[sqw.append(int(s[m])) for i in range(0, 9, 3) for k in range(i, i+21, 9) for m in range(k, k+3)]
@@ -486,82 +497,70 @@ def min_set(some_lst):
                 if len(some_lst[i][k]) == 0:
                     some_lst[i][k].update(a)
                 elif len(some_lst[i][k]) > 1:
+                    c = (some_lst[i][k]).copy()
                     some_lst[i][k].intersection_update(a)
+                    if len(some_lst[i][k]) < len(c):
+                        global count
+                        count += 1
                 else:
                     global num_num
                     num_num += 1
                     some_lst[i][k] = list(some_lst[i][k])[0]
 
 
-
-
-#Алгоритмы судоку
-
-#Единственный в строке
-
-#Два в строке - 46 и 64
-
-#Или 347 и 3587 и больше нигде нет 37
-
-
-'''  # Для ед в строке:
-
-for lst in all_lst:
-    l = []
-    for elem in lst:
-        if type(elem) is set:
-            l += (list(elem))
-    for elem in lst:
-        if type(elem) is set:
-            for el in elem:
-                if l.count(el) == 1:
-                    elem.intersection_update({el})
-                    break
-'''
-
-
-
-'''  # Для двух возможных в строке:
-
-for lst in all_lst:
-    a = set()
-    l = []
-    for elem in lst:
-        if type(elem) is set:
-            l += (list(elem))
-    for elem in lst:
-        if type(elem) is set:
-            for el in elem:
-                if l.count(el) == 2:
-                    a.add(el)
-    for elem in lst:
-        if type(elem) is set:
-            if a <= elem:
-                elem.intersection_update(a)    '''
-
-
-   # если по два одинаковых в двух клетках:
-for lst in all_lst:
-    for i in range(9):
-        a = set()
-        if type(lst[i]) is set:
-            a = lst[i]
+# Для единственного в строке: 5283 257 789 т е 9:
+def one_from_all(all_lst):
+    for lst in all_lst:
+        l = []
         for elem in lst:
             if type(elem) is set:
-                if a <= elem and len(a) == len(elem):
-                    b = a
-                    c = list(b)
-                    for i in range(len(c)):
-                        for elem in lst:
-                            if type(elem) is set:
-                                if {c[i]} <= elem and len(b) < len(elem):
-                                    elem.difference_update({c[i]})
+                l += (list(elem))
+        for elem in lst:
+            if type(elem) is set:
+                for el in elem:
+                    if l.count(el) == 1:
+                        elem.intersection_update({el})
+                        break
 
 
+# Для двух возможных в строке: 347 и 3587 и больше нигде нет 37
+def two_from_all(all_lst):
+    for lst in all_lst:
+        a = set()
+        l = []
+        for elem in lst:
+            if type(elem) is set:
+                l += (list(elem))
+        for elem in lst:
+            if type(elem) is set:
+                for el in elem:
+                    if l.count(el) == 2:
+                        a.add(el)
+        for elem in lst:
+            if type(elem) is set:
+                if a <= elem:
+                    elem.intersection_update(a)
 
 
+# если по два одинаковых в двух клетках: 46 и 64
+def two_from_two(all_lst):
+    for lst in all_lst:
+        for i in range(9):
+            a = set()
+            if type(lst[i]) is set:
+                a = lst[i]
+            for elem in lst:
+                if type(elem) is set:
+                    if a <= elem and len(a) == len(elem):
+                        b = a
+                        c = list(b)
+                        for i in range(len(c)):
+                            for elem in lst:
+                                if type(elem) is set:
+                                    if {c[i]} <= elem and len(b) < len(elem):
+                                        elem.difference_update({c[i]})
 
-print(ss)
+
 
 
 gor_str = change_zero(gor_str)  # создали горизонтальные строки из 9 списков с пустыми сетами и числами
@@ -571,10 +570,108 @@ sqw = make_sqw(gor_str)  # создали малые квадраты из 9 с�
 #diag2 = make_diag2(gor_str)  # создали вторую диагональ из списка с пустыми сетами и числами
 
 
-for _ in range(17):
+for _ in range(6):
     min_set(gor_str)
     min_set(vert_str)
     min_set(sqw)
+
+one_from_all(gor_str)
+for _ in range(2):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+one_from_all(vert_str)
+for _ in range(19):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+one_from_all(sqw)
+for _ in range(35):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+one_from_all(gor_str)
+for _ in range(1):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+one_from_all(vert_str)
+for _ in range(2):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+one_from_all(sqw)
+for _ in range(2):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+
+two_from_all(gor_str)
+for _ in range(1):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+def check_for_rep(all_lst):
+    l = list(set_all)
+    for lst in all_lst:
+        for i in range(9):
+            score = lst.count(l[i])
+            if score > 1:
+                print('неверное решение')
+
+
+
+
+check_for_rep(gor_str)
+check_for_rep(vert_str)
+check_for_rep(sqw)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+''' one_from_all(vert_str)
+    one_from_all(sqw)
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+    two_from_all(gor_str)
+    two_from_all(vert_str)
+    two_from_all(sqw)
+    two_from_two(gor_str)
+    two_from_two(vert_str)
+    two_from_two(sqw)'''
 
 
 
@@ -626,4 +723,4 @@ print('gor_str =', gor_str)
 print('vert_str =', vert_str)
 print('sqw =', sqw)
 print('num_num =', num_num)
-
+print('count =', count)
