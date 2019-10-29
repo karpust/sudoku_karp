@@ -394,6 +394,7 @@ set_all = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 gor_str = [int(s[i]) for i in range(len(s))]
 num_num = 0
 count = 0
+g = 0
 #vert_str = [int(s[i]) for k in range(9) for i in range(k, len(s), 9)]
 #sqw = []
 #[sqw.append(int(s[m])) for i in range(0, 9, 3) for k in range(i, i+21, 9) for m in range(k, k+3)]
@@ -523,7 +524,7 @@ def one_from_all(all_lst):
                         break
 
 
-# Для двух возможных в строке: 347 и 3587 и больше нигде нет 37
+# Для двух возможных в строке: 347 и 3587 и больше нигде нет 37 оставит в них только 37
 def two_from_all(all_lst):
     for lst in all_lst:
         a = set()
@@ -538,28 +539,48 @@ def two_from_all(all_lst):
                         a.add(el)
         for elem in lst:
             if type(elem) is set:
-                if a <= elem:
-                    elem.intersection_update(a)
+                i = 0
+                b = elem.intersection(a)
+                if len(b) == 2:
+                    for elem in lst:
+                        if type(elem) is set:
+                            if b <= elem:
+                                i += 1
+                if i == 2:
+                    for elem in lst:
+                        if type(elem) is set:
+                            if b <= elem:
+                                elem.intersection_update(b)
+                                global g
+                                g += 1
 
 
-# если по два одинаковых в двух клетках: 46 и 64
+# если по два одинаковых в двух клетках: 46 и 64 то уберет из других 46
 def two_from_two(all_lst):
     for lst in all_lst:
-        for i in range(9):
-            a = set()
-            if type(lst[i]) is set:
-                a = lst[i]
-            for elem in lst:
-                if type(elem) is set:
-                    if a <= elem and len(a) == len(elem):
-                        b = a
-                        c = list(b)
-                        for i in range(len(c)):
-                            for elem in lst:
-                                if type(elem) is set:
-                                    if {c[i]} <= elem and len(b) < len(elem):
-                                        elem.difference_update({c[i]})
+        for elem in lst:
+            i = 0
+            if type(elem) is set and len(elem) == 2:
+                a = elem
+                for elem in lst:
+                    if type(elem) is set:
+                        if a <= elem and len(elem) == 2:
+                            i += 1
+                if i == 2:
+                    for elem in lst:
+                        if type(elem) is set and len(elem) > 2:
+                            elem.difference_update(a)
+                            global g
+                            g += 1
 
+
+def check_for_rep(all_lst):
+    l = list(set_all)
+    for lst in all_lst:
+        for i in range(9):
+            score = lst.count(l[i])
+            if score > 1:
+                print('неверное решение')
 
 
 
@@ -611,20 +632,17 @@ for _ in range(2):
     min_set(vert_str)
     min_set(sqw)
 
+for _ in range(10):
+    two_from_all(gor_str)
+    two_from_all(vert_str)
+    two_from_all(sqw)
 
-two_from_all(gor_str)
-for _ in range(1):
+for _ in range(0):
     min_set(gor_str)
     min_set(vert_str)
     min_set(sqw)
 
-def check_for_rep(all_lst):
-    l = list(set_all)
-    for lst in all_lst:
-        for i in range(9):
-            score = lst.count(l[i])
-            if score > 1:
-                print('неверное решение')
+
 
 
 
@@ -724,3 +742,4 @@ print('vert_str =', vert_str)
 print('sqw =', sqw)
 print('num_num =', num_num)
 print('count =', count)
+print(g)
