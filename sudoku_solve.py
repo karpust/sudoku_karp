@@ -507,6 +507,7 @@ def min_set(some_lst):
                     global num_num
                     num_num += 1
                     some_lst[i][k] = list(some_lst[i][k])[0]
+                    #min_set(some_lst)
 
 
 # Для единственного в строке: 5283 257 789 т е 9:
@@ -558,20 +559,25 @@ def two_from_all(all_lst):
 # если по два одинаковых в двух клетках: 46 и 64 то уберет из других 46
 def two_from_two(all_lst):
     for lst in all_lst:
+        i = 0
         for elem in lst:
             i = 0
             if type(elem) is set and len(elem) == 2:
-                a = elem
+                a = elem.copy()
                 for elem in lst:
                     if type(elem) is set:
                         if a <= elem and len(elem) == 2:
                             i += 1
                 if i == 2:
-                    for elem in lst:
-                        if type(elem) is set and len(elem) > 2:
-                            elem.difference_update(a)
-                            global g
-                            g += 1
+                    for el in a:
+                        for elem in lst:
+                            if type(elem) is set:
+                                if a <= elem and len(elem) == 2:
+                                    pass
+                                elif el in elem:
+                                    elem.remove(el)
+                                    global g
+                                    g += 1
 
 
 def check_for_rep(all_lst):
@@ -637,13 +643,53 @@ for _ in range(10):
     two_from_all(vert_str)
     two_from_all(sqw)
 
+for _ in range(1):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+two_from_two(gor_str)
+two_from_two(vert_str)
+two_from_two(sqw)
+
+for _ in range(4):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+one_from_all(sqw)
+for _ in range(2):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
+
+two_from_all(gor_str)
+two_from_all(vert_str)
+two_from_all(sqw)
 for _ in range(0):
     min_set(gor_str)
     min_set(vert_str)
     min_set(sqw)
 
+one_from_all(sqw)
+for _ in range(6):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
 
+one_from_all(sqw)
+for _ in range(2):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
 
+two_from_two(gor_str)
+two_from_two(vert_str)
+two_from_two(sqw)
+for _ in range(9):
+    min_set(gor_str)
+    min_set(vert_str)
+    min_set(sqw)
 
 
 
@@ -740,6 +786,6 @@ ver1 = VertStr(al)
 print('gor_str =', gor_str)
 print('vert_str =', vert_str)
 print('sqw =', sqw)
-print('num_num =', num_num)
-print('count =', count)
+print('множество превратилось в число =', num_num)
+print('уменьшилось кол-во членов множества =', count)
 print(g)
