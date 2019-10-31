@@ -705,6 +705,44 @@ check_for_rep(sqw)
 
 
 
+alsq = '010 038 060' \
+       '000 001 045' \
+       '590 000 000' \
+       '000 390 100' \
+       '650 000 000' \
+       '000 160 020' \
+       '000 614 000' \
+       '007 000 000' \
+       '000 000 809'
+
+
+class GorLine:
+    def __init__(self, source):
+        self.source = source
+
+    def str_to_list(self):
+        self.source = ''.join(i for i in alsq if i.isdigit())
+        return [int(self.source[i]) for i in range(len(self.source))]
+
+    def change_zero(self, gor_line):  # меняем ноль на множество
+        ls = []
+        for i in range(0, 81, 9):
+            l = []
+            for k in range(i, i + 9):
+                if gor_line[k] == 0:
+                    gor_line[k] = set()
+                l.append(gor_line[k])
+            ls.append(l)
+        return ls
+
+class VertLine:
+    def __init__(self, gorstr):
+        self.gorstr = gorstr
+        return
+
+
+g = GorLine(alsq)
+print(g)
 
 
 
@@ -724,52 +762,7 @@ check_for_rep(sqw)
 
 
 
-''' one_from_all(vert_str)
-    one_from_all(sqw)
-    min_set(gor_str)
-    min_set(vert_str)
-    min_set(sqw)
 
-    two_from_all(gor_str)
-    two_from_all(vert_str)
-    two_from_all(sqw)
-    two_from_two(gor_str)
-    two_from_two(vert_str)
-    two_from_two(sqw)'''
-
-
-
-
-class BigSquare:
-    def __init__(self, *al):
-        pass
-
-    '''def input_list(self, a:str) -> list:
-'''
-
-
-
-class GorStr(BigSquare):
-    def __init__(self, *al):
-        super().__init__(self, *al)
-        for st in al:
-            self.st = st
-
-
-class VertStr(BigSquare):
-    def __init__(self, *al, v=[]):
-        super().__init__(self, *al)
-        self.v = v
-        for st in al:
-            for i in range(9):
-                lst = []
-                for el in st:
-                    lst.append(el[i])
-                v.append(lst)
-
-
-'''for i in range(8):
-    for k in range(8):'''
 
 
 
